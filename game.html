@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆力训练游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .progress-bar {
+            display: grid;
+            grid-template-columns: repeat(100, 1fr);
+            gap: 2px;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .level {
+            height: 8px;
+            background: #ddd;
+            border-radius: 2px;
+        }
+        .level.correct {
+            background: #4CAF50;
+        }
+        .level.wrong {
+            background: #f44336;
+        }
+        .game-title {
+            font-size: 2.5em;
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+        .game-rules {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: left;
+            line-height: 1.6;
+        }
+        .number-display {
+            font-size: 4em;
+            margin: 20px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timer {
+            font-size: 2em;
+            color: #f44336;
+            margin: 10px 0;
+        }
+        .input-section {
+            margin: 20px 0;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 200px;
+            border: 2px solid #2196F3;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .result {
+            font-size: 1.5em;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .hidden {
+            display: none;
+        }
+        .language-switcher {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        select {
+            padding: 5px;
+            border: 1px solid #2196F3;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switcher">
+        <select id="languageSelect" onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="es">Español</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+        </select>
+    </div>
+    <div class="container">
+        <div class="progress-bar" id="progressBar"></div>
+        <h1 class="game-title" id="gameTitle"></h1>
+        
+        <div id="welcomeScreen">
+            <div class="game-rules">
+                <h2 id="rulesTitle"></h2>
+                <p id="rule1"></p>
+                <p id="rule2"></p>
+                <p id="rule3"></p>
+                <p id="rule4"></p>
+                <p id="rule5"></p>
+            </div>
+            <button id="startButton"></button>
+        </div>
+
+        <div id="gameScreen" class="hidden">
+            <div class="timer" id="timer"></div>
+            <div class="number-display" id="numberDisplay"></div>
+            <div class="input-section hidden" id="inputSection">
+                <input type="number" id="userInput">
+                <button id="submitButton"></button>
+            </div>
+        </div>
+
+        <div id="resultScreen" class="hidden">
+            <div class="result" id="resultText"></div>
+            <button id="restartButton"></button>
+        </div>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script>
+        class MemoryGame {
+            constructor() {
+                this.currentLevel = 1;
+                this.score = 0;
+                this.currentNumber = '';
+                this.timerInterval = null;
+                this.timeLeft = 5;
+                this.initializeElements();
+                this.initializeProgressBar();
+                this.bindEvents();
+                this.updateLanguage();
+            }
+
+            initializeElements() {
+                this.welcomeScreen = document.getElementById('welcomeScreen');
+                this.gameScreen = document.getElementById('gameScreen');
+                this.resultScreen = document.getElementById('resultScreen');
+                this.numberDisplay = document.getElementById('numberDisplay');
+                this.inputSection = document.getElementById('inputSection');
+                this.timerElement = document.getElementById('timer');
+                this.userInput = document.getElementById('userInput');
+                this.resultText = document.getElementById('resultText');
+                this.progressBar = document.getElementById('progressBar');
+
+                // 设置语言选择器的初始值
+                const currentLang = getCurrentLanguage();
+                document.getElementById('languageSelect').value = currentLang;
+                document.documentElement.lang = currentLang;
+            }
+
+            updateLanguage() {
+                const t = getTranslation();
+                
+                // 更新标题和按钮文本
+                document.getElementById('gameTitle').textContent = t.title;
+                document.getElementById('rulesTitle').textContent = t.gameRules.title;
+                document.getElementById('rule1').textContent = t.gameRules.rule1;
+                document.getElementById('rule2').textContent = t.gameRules.rule2;
+                document.getElementById('rule3').textContent = t.gameRules.rule3;
+                document.getElementById('rule4').textContent = t.gameRules.rule4;
+                document.getElementById('rule5').textContent = t.gameRules.rule5;
+                document.getElementById('startButton').textContent = t.startGame;
+                document.getElementById('submitButton').textContent = t.submit;
+                document.getElementById('restartButton').textContent = t.restart;
+                
+                // 更新输入框占位符
+                this.userInput.placeholder = t.enterNumber;
+                
+                // 如果正在显示计时器，更新计时器文本
+                if (this.timerElement.textContent) {
+                    this.updateTimer();
+                }
+            }
+
+            initializeProgressBar() {
+                this.progressBar.innerHTML = '';
+                for (let i = 0; i < 100; i++) {
+                    const level = document.createElement('div');
+                    level.className = 'level';
+                    this.progressBar.appendChild(level);
+                }
+            }
+
+            bindEvents() {
+                document.getElementById('startButton').addEventListener('click', () => this.startGame());
+                document.getElementById('submitButton').addEventListener('click', () => this.checkAnswer());
+                document.getElementById('restartButton').addEventListener('click', () => this.restart());
+                this.userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.checkAnswer();
+                });
+            }
+
+            startGame() {
+                this.welcomeScreen.classList.add('hidden');
+                this.gameScreen.classList.remove('hidden');
+                this.resultScreen.classList.add('hidden');
+                this.startLevel();
+            }
+
+            generateNumber() {
+                const digits = this.currentLevel;
+                const min = Math.pow(10, digits - 1);
+                const max = Math.pow(10, digits) - 1;
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            startLevel() {
+                this.currentNumber = this.generateNumber().toString();
+                this.numberDisplay.textContent = this.currentNumber;
+                this.inputSection.classList.add('hidden');
+                this.timeLeft = 5;
+                this.updateTimer();
+                
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimer();
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timerInterval);
+                        this.numberDisplay.textContent = '';
+                        this.inputSection.classList.remove('hidden');
+                        this.userInput.value = '';
+                        this.userInput.focus();
+                    }
+                }, 1000);
+            }
+
+            updateTimer() {
+                const t = getTranslation();
+                this.timerElement.textContent = `${t.countdown}${this.timeLeft}${t.seconds}`;
+            }
+
+            checkAnswer() {
+                const userAnswer = this.userInput.value;
+                const correct = userAnswer === this.currentNumber;
+                
+                const levelElement = this.progressBar.children[this.currentLevel - 1];
+                if (correct) {
+                    levelElement.classList.add('correct');
+                    this.score++;
+                    this.currentLevel++;
+                    if (this.currentLevel <= 100) {
+                        this.startLevel();
+                    } else {
+                        this.endGame(true);
+                    }
+                } else {
+                    levelElement.classList.add('wrong');
+                    this.endGame(false);
+                }
+            }
+
+            endGame(completed) {
+                const t = getTranslation();
+                clearInterval(this.timerInterval);
+                this.gameScreen.classList.add('hidden');
+                this.resultScreen.classList.remove('hidden');
+                
+                let message = `${t.gameOver}\n${t.yourScore}${this.score}\n`;
+                if (completed) {
+                    message += t.excellent;
+                } else if (this.score >= 80) {
+                    message += t.excellent;
+                } else if (this.score >= 60) {
+                    message += t.good;
+                } else {
+                    message += t.tryAgain;
+                }
+                
+                this.resultText.textContent = message;
+            }
+
+            restart() {
+                this.currentLevel = 1;
+                this.score = 0;
+                this.initializeProgressBar();
+                this.startGame();
+            }
+        }
+
+        // 语言切换函数
+        function changeLanguage(lang) {
+            setLanguage(lang);
+            document.documentElement.lang = lang;
+            window.game.updateLanguage();
+        }
+
+        // 初始化游戏
+        window.onload = () => {
+            window.game = new MemoryGame();
+        };
+    </script>
+</body>
+</html>
