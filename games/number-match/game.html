@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Match Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="gameInstructions" class="game-instructions">
+            <h2 data-translate="home.games.numberMatch.rules.title">Game Rules</h2>
+            <ul>
+                <li data-translate="home.games.numberMatch.rules.grid">Find matching numbers in a 5×5 grid</li>
+                <li data-translate="home.games.numberMatch.rules.time">Complete as many matches as possible within 60 seconds</li>
+                <li data-translate="home.games.numberMatch.rules.scoring">Score points based on the number of matches (2 numbers = 2 points, etc.)</li>
+                <li data-translate="home.games.numberMatch.rules.end">Game ends when time runs out or no matches remain</li>
+            </ul>
+            <button id="startGame" class="start-btn" data-translate="home.games.numberMatch.start">Start Game</button>
+        </div>
+
+        <div id="gamePlay" class="game-play hidden">
+            <div class="game-header">
+                <div class="timer">Time: <span id="timeLeft">60</span>s</div>
+                <div class="score">Score: <span id="currentScore">0</span></div>
+            </div>
+
+            <div id="gameBoard" class="game-board"></div>
+        </div>
+
+        <div id="gameOver" class="game-over hidden">
+            <h2 data-translate="home.games.numberMatch.gameOver.title">Game Over!</h2>
+            <p data-translate="home.games.numberMatch.gameOver.timeUp">Time's up!</p>
+            <p>Score: <span id="finalScore">0</span></p>
+            <button id="restartGame" class="restart-btn" data-translate="home.games.numberMatch.gameOver.restart">Play Again</button>
+        </div>
+
+        <div id="noMatches" class="no-matches hidden">
+            <h2 data-translate="home.games.numberMatch.noMatches.title">No More Matches!</h2>
+            <p data-translate="home.games.numberMatch.noMatches.message">No more matching numbers available</p>
+            <p>Score: <span id="noMatchesScore">0</span></p>
+            <button id="playAgain" class="restart-btn" data-translate="home.games.numberMatch.noMatches.restart">Play Again</button>
+        </div>
+    </div>
+    <script src="../../js/translations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
 
