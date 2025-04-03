@@ -1,1 +1,55 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Breaker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="gameInstructions" class="game-instructions">
+            <h2 data-translate="home.games.codeBreaker.rules.title">Game Rules</h2>
+            <ul>
+                <li data-translate="home.games.codeBreaker.rules.goal">Break the 4-digit code within 10 attempts</li>
+                <li data-translate="home.games.codeBreaker.rules.hint">After each guess, get hints in the format: xAyB</li>
+                <li data-translate="home.games.codeBreaker.rules.hintExplain">A = correct number & position, B = correct number only</li>
+                <li data-translate="home.games.codeBreaker.rules.example">Example: 2A1B means 2 correct numbers in correct positions, 1 correct number in wrong position</li>
+            </ul>
+            <button id="startGame" class="start-btn" data-translate="home.games.codeBreaker.start">Start Game</button>
+        </div>
+
+        <div id="gamePlay" class="game-play hidden">
+            <div class="game-header">
+                <div class="attempts">Attempts: <span id="attemptsLeft">10</span></div>
+            </div>
+
+            <div class="guess-history" id="guessHistory">
+                <!-- Previous guesses will be displayed here -->
+            </div>
+
+            <div class="input-section">
+                <input type="text" id="guessInput" maxlength="4" placeholder="Enter 4 digits" pattern="[0-9]*">
+                <button id="submitGuess" class="guess-btn" data-translate="home.games.codeBreaker.submit">Submit</button>
+            </div>
+        </div>
+
+        <div id="gameWon" class="game-result hidden">
+            <h2 data-translate="home.games.codeBreaker.gameWon.title">Congratulations!</h2>
+            <p data-translate="home.games.codeBreaker.gameWon.message">You broke the code!</p>
+            <p>Attempts: <span id="finalAttempts">0</span></p>
+            <button id="playAgain" class="restart-btn" data-translate="home.games.codeBreaker.gameWon.restart">Play Again</button>
+        </div>
+
+        <div id="gameLost" class="game-result hidden">
+            <h2 data-translate="home.games.codeBreaker.gameLost.title">Game Over</h2>
+            <p data-translate="home.games.codeBreaker.gameLost.message">The code was:</p>
+            <p class="secret-code" id="secretCode">0000</p>
+            <button id="tryAgain" class="restart-btn" data-translate="home.games.codeBreaker.gameLost.restart">Try Again</button>
+        </div>
+    </div>
+    <script src="../../js/translations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
