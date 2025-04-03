@@ -1,1 +1,52 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Puzzle Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="gameInstructions" class="game-instructions">
+            <h2 data-translate="home.games.numberPuzzle.rules.title">Game Rules</h2>
+            <ul>
+                <li data-translate="home.games.numberPuzzle.rules.goal">Arrange numbers from 1 to 8 in order</li>
+                <li data-translate="home.games.numberPuzzle.rules.move">Click numbers next to the empty space to move them</li>
+                <li data-translate="home.games.numberPuzzle.rules.time">Complete the puzzle within 90 seconds</li>
+                <li data-translate="home.games.numberPuzzle.rules.scoring">Fewer moves mean a better score</li>
+            </ul>
+            <button id="startGame" class="start-btn" data-translate="home.games.numberPuzzle.start">Start Game</button>
+        </div>
+
+        <div id="gamePlay" class="game-play hidden">
+            <div class="game-header">
+                <div class="timer">Time: <span id="timeLeft">90</span>s</div>
+                <div class="moves">Moves: <span id="moveCount">0</span></div>
+            </div>
+
+            <div id="puzzleBoard" class="puzzle-board">
+                <!-- Puzzle tiles will be generated here -->
+            </div>
+        </div>
+
+        <div id="gameWon" class="game-result hidden">
+            <h2 data-translate="home.games.numberPuzzle.gameWon.title">Congratulations!</h2>
+            <p data-translate="home.games.numberPuzzle.gameWon.message">You solved the puzzle!</p>
+            <p>Time: <span id="finalTime">0</span>s</p>
+            <p>Moves: <span id="finalMoves">0</span></p>
+            <button id="playAgain" class="restart-btn" data-translate="home.games.numberPuzzle.gameWon.restart">Play Again</button>
+        </div>
+
+        <div id="gameLost" class="game-result hidden">
+            <h2 data-translate="home.games.numberPuzzle.gameLost.title">Time's Up!</h2>
+            <p data-translate="home.games.numberPuzzle.gameLost.message">Keep trying to improve your speed!</p>
+            <p>Moves: <span id="timeoutMoves">0</span></p>
+            <button id="tryAgain" class="restart-btn" data-translate="home.games.numberPuzzle.gameLost.restart">Try Again</button>
+        </div>
+    </div>
+    <script src="../../js/translations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
