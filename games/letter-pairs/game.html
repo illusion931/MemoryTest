@@ -1,1 +1,48 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Pairs Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="gameInstructions" class="game-instructions">
+            <h2 data-translate="home.games.letterPairs.rules.title">Game Rules</h2>
+            <ul>
+                <li data-translate="home.games.letterPairs.rules.time">Find all letter pairs within 60 seconds</li>
+                <li data-translate="home.games.letterPairs.rules.pairs">Click on matching letter pairs to remove them</li>
+                <li data-translate="home.games.letterPairs.rules.scoring">Clear all pairs to win!</li>
+            </ul>
+            <button id="startGame" class="start-btn">Start Game</button>
+        </div>
+
+        <div id="gamePlay" class="game-play hidden">
+            <div class="game-header">
+                <div class="timer">Time: <span id="timeLeft">60</span>s</div>
+                <div class="pairs-left">Pairs Left: <span id="pairsLeft">0</span></div>
+            </div>
+
+            <div id="gameBoard" class="game-board"></div>
+        </div>
+
+        <div id="gameOver" class="game-over hidden">
+            <h2 data-translate="home.games.letterPairs.gameOver.title">Game Over!</h2>
+            <p data-translate="home.games.letterPairs.gameOver.timeUp">Time's up!</p>
+            <p>Score: <span id="finalScore">0</span></p>
+            <button id="restartGame" data-translate="home.games.letterPairs.gameOver.restart">Play Again</button>
+        </div>
+
+        <div id="gameWon" class="game-won hidden">
+            <h2 data-translate="home.games.letterPairs.gameWon.title">Congratulations!</h2>
+            <p data-translate="home.games.letterPairs.gameWon.message">You found all pairs!</p>
+            <p>Time: <span id="finalTime">0</span>s</p>
+            <button id="playAgain" data-translate="home.games.letterPairs.gameWon.restart">Play Again</button>
+        </div>
+    </div>
+    <script src="../../js/translations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
