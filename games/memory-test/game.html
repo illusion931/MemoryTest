@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Level Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="gameInstructions" class="game-instructions">
+            <h2 data-translate="home.games.memoryTest.rules.title">Memory Training</h2>
+            <ul>
+                <li>游戏开始后，屏幕会显示一组数字序列，显示时间3秒后数字消失，同时出现0-9的数字按钮。</li>
+                <li>玩家需要通过点击数字按钮，按照原顺序输入这组数字。</li>
+                <li>游戏一共30关，数字序列的长度从第1关的3个数字开始，每过一关增加1个数字。</li>
+                <li>屏幕上会显示玩家的通关进度，通过的关卡显示绿色。</li>
+                <li>当玩家输入错误时，游戏自动结束，并显示玩家的分数。</li>
+                <li>总分30分，每通过一关得1分，25分以上为优秀。</li>
+            </ul>
+            <button id="startGame" class="start-btn" data-translate="home.games.memoryTest.start">Start Game</button>
+        </div>
+
+        <div id="gamePlay" class="game-play hidden">
+            <div class="game-header">
+                <div class="level">Level: <span id="currentLevel">1</span>/10</div>
+                <div class="score">Score: <span id="currentScore">0</span></div>
+            </div>
+
+            <div id="numberDisplay" class="number-display">
+                <!-- Numbers will be displayed here -->
+            </div>
+
+            <div id="numberPad" class="number-pad hidden">
+                <div class="number-grid">
+                    <button class="number-btn" data-number="1">1</button>
+                    <button class="number-btn" data-number="2">2</button>
+                    <button class="number-btn" data-number="3">3</button>
+                    <button class="number-btn" data-number="4">4</button>
+                    <button class="number-btn" data-number="5">5</button>
+                    <button class="number-btn" data-number="6">6</button>
+                    <button class="number-btn" data-number="7">7</button>
+                    <button class="number-btn" data-number="8">8</button>
+                    <button class="number-btn" data-number="9">9</button>
+                    <button class="number-btn" data-number="0">0</button>
+                </div>
+                <div class="input-display">
+                    <span id="inputNumbers"></span>
+                    <button id="backspace" class="control-btn">⌫</button>
+                </div>
+                <button id="submitAnswer" class="submit-btn" data-translate="home.games.memoryTest.submit">Submit</button>
+            </div>
+        </div>
+
+        <div id="levelResult" class="level-result hidden">
+            <h3 id="resultTitle"></h3>
+            <p id="resultMessage"></p>
+            <button id="nextLevel" class="next-btn" data-translate="home.games.memoryTest.next">Next Level</button>
+        </div>
+
+        <div id="finalResult" class="final-result hidden">
+            <h2 data-translate="home.games.memoryTest.finalResult.title">Test Complete!</h2>
+            <div class="result-details">
+                <p>Score: <span id="finalScore">0</span>/100</p>
+                <p id="levelAchieved"></p>
+                <p id="memoryLevel"></p>
+            </div>
+            <button id="playAgain" class="restart-btn" data-translate="home.games.memoryTest.finalResult.restart">Try Again</button>
+        </div>
+    </div>
+    <script src="../../js/translations.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
 
